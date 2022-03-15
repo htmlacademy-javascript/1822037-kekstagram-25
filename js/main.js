@@ -1,3 +1,36 @@
+const DESCRIPTIONS =  [
+  'Не подходи ко мне, я обиделась.',
+  'I will survive или утро, после вечеринки.',
+  'Show must go on. Я требую продолжения банкета.',
+  'Добби свободен. Не верю, что 5 лет академии позади.',
+  'Первый день в спортзале. Сдаюсь тренеру: «Ломай меня полностью»',
+  'Обещаю, с понедельника на диете.',
+  'Нет — не слипнется.',
+  'Я, еще раз я, и снова я.',
+  'Сотрудник года.',
+  'Красивая подпись под фото.',
+];
+
+const COMMENTS = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+];
+
+const NAMES = [
+  'Соня',
+  'милое олицетворение зла',
+  'Вечно молодой',
+  'the_dream_of_life',
+  'Gucci cat ',
+  'Иван Петров',
+  'Mr. Golden Fox',
+];
+
+const DATA_COUNT = 25;
+
 // решение было взято с сайта https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
 const getRandomInt = (min, max) => {
@@ -12,5 +45,26 @@ const getRandomInt = (min, max) => {
 
 const checkСommentLength = (str, maxLength) => str.length <= maxLength;
 
-getRandomInt();
+const getRandomArrayElement = (elements) => {
+  return elements[getRandomInt(0, elements.length - 1)];
+};
+
+const createData = () => {
+  return {
+    id: getRandomInt(1, 25),
+    url: 'photos/' + getRandomInt(1, 6) + '.jpg',
+    description: getRandomArrayElement(DESCRIPTIONS),
+    likes: getRandomInt(15, 200),
+    comments: {
+      id: getRandomInt(1, 100),
+      avatar: 'img/avatar-' + getRandomInt(1, 6) + '.svg',
+      message: getRandomArrayElement(COMMENTS),
+      name: getRandomArrayElement(NAMES),
+    }
+  };
+};
+
+const data = Array.from({length: DATA_COUNT}, createData);
+
 checkСommentLength();
+console.log(data);
