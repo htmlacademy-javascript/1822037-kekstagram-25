@@ -29,7 +29,8 @@ const NAMES = [
   'Mr. Golden Fox',
 ];
 
-const DATA_COUNT = 25;
+const PHOTOS_COUNT = 25;
+const COMMENTS_COUNT = 5;
 
 // решение было взято с сайта https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
@@ -45,26 +46,25 @@ const getRandomInt = (min, max) => {
 
 const checkСommentLength = (str, maxLength) => str.length <= maxLength;
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomInt(0, elements.length - 1)];
-};
+const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
 
-const createData = () => {
-  return {
-    id: getRandomInt(1, 25),
-    url: 'photos/' + getRandomInt(1, 6) + '.jpg',
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomInt(15, 200),
-    comments: {
-      id: getRandomInt(1, 100),
-      avatar: 'img/avatar-' + getRandomInt(1, 6) + '.svg',
-      message: getRandomArrayElement(COMMENTS),
-      name: getRandomArrayElement(NAMES),
-    }
-  };
-};
+const createPhoto = () => ({
+  id: getRandomInt(1, 25),
+  url: `photos/${getRandomInt(1, 6)}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInt(15, 200),
+});
 
-const data = Array.from({length: DATA_COUNT}, createData);
+const createComment = () => ({
+  id: getRandomInt(1, 100),
+  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
+  message: getRandomArrayElement(COMMENTS),
+  name: getRandomArrayElement(NAMES),
+});
 
+const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
+const createComments = () => Array.from({length: COMMENTS_COUNT}, createComment);
+
+createPhotos();
+createComments();
 checkСommentLength();
-console.log(data);
