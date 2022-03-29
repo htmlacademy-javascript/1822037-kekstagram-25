@@ -40,6 +40,7 @@ const createPhoto = () => ({
   url: `photos/${getRandomInt(1, 6)}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInt(15, 200),
+  comments: getRandomInt(1, 50),
 });
 
 const createComment = () => ({

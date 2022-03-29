@@ -14,5 +14,5 @@ const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.le
 
 export {getRandomArrayElement};
 export {getRandomInt};
+export {checkСommentLength};
 
-checkСommentLength();
