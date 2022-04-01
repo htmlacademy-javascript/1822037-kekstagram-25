@@ -1,8 +1,8 @@
 import {isEscapeKey} from './util.js';
 
-const body = document.querySelector('body');
+const body = document.body;
 const fullPicture = document.querySelector('.big-picture');
-const fullPictureImg = fullPicture.querySelector('.big-picture__img').querySelector('img');
+const fullPictureImg = fullPicture.querySelector('.big-picture__img img');
 const fullPictureLikes = fullPicture.querySelector('.likes-count');
 const fullPictureCommentsCount = fullPicture.querySelector('.comments-count');
 const fullPictureDescription = fullPicture.querySelector('.social__caption');
@@ -11,12 +11,6 @@ const commentsList = fullPicture.querySelector('.social__comments');
 const commentsButtonLoader = fullPicture.querySelector('.social__comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
-const onPopupEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeWindow();
-  }
-};
 
 const closeWindow = () => {
   fullPicture.classList.add('hidden');
@@ -31,11 +25,14 @@ const openWindow = () => {
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
-const onfullPictureClose = pictureButtonCancelElement.addEventListener('click', () => {
-  closeWindow();
-});
+function onPopupEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeWindow();
+  }
+}
 
-const renderComment = (comments) => {
+const renderComments = (comments) => {
   const commentsListFragment = document.createDocumentFragment();
 
   comments.forEach((comment) => {
@@ -50,15 +47,17 @@ const renderComment = (comments) => {
 };
 
 const openFullPictureWindow = (picture) => {
-  openWindow();
   commentsButtonLoader.classList.add('hidden');
   fullPictureImg.src = picture.url;
   fullPictureLikes.textContent = picture.likes;
   fullPictureDescription.textContent = picture.description;
   fullPictureCommentsCount.textContent = picture.comments.length;
-  const fullPictureComments = picture.comments;
-  renderComment(fullPictureComments);
-  onfullPictureClose();
+  renderComments(picture.comments);
+  openWindow();
 };
+
+pictureButtonCancelElement.addEventListener('click', () => {
+  closeWindow();
+});
 
 export {openFullPictureWindow};
