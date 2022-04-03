@@ -35,14 +35,6 @@ const NAMES = [
 const PHOTOS_COUNT = 25;
 const COMMENTS_COUNT = 5;
 
-const createPhoto = () => ({
-  id: getRandomInt(1, 25),
-  url: `photos/${getRandomInt(1, 6)}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInt(15, 200),
-  comments: getRandomInt(1, 50),
-});
-
 const createComment = () => ({
   id: getRandomInt(1, 100),
   avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
@@ -50,8 +42,17 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
 const createComments = () => Array.from({length: COMMENTS_COUNT}, createComment);
+
+const createPhoto = () => ({
+  id: getRandomInt(1, 25),
+  url: `photos/${getRandomInt(1, 6)}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInt(15, 200),
+  comments: createComments(),
+});
+
+const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
 
 export {createPhotos};
 export {createComments};
