@@ -25,7 +25,6 @@ function onPopupEscKeydown(evt) {
   }
 }
 
-
 imgUploadInputElement.addEventListener('change', () => {
   if (imgUploadInputElement.value){
     openWindow();
@@ -44,32 +43,29 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'form__error'
 });
 
-let errorMessage = 'хеш-тег не может состоять только из одной решётки <br> максимальная длина одного хэш-тега 20 символов, включая решётку'
+const errorMessage = 'не более 5-ти хэш-тегов<br>максимальная длина хэш-тега 20 символов<br>хэш-теги не должны повторятся<br>хэш-тег должен содержать только буквы и цифры<br>хэш-тег должен начинатся с символа #';
+const rex = /^#[a-zа-яё0-9]{1,20}$/i;
 
 const validateHashtags = (value) => {
-  const hashtags = value.split(' ');
-  const rex = /^#[a-zа-яё0-9]{1,20}$/i;
+  const hashtags = value.trim().toLowerCase().split(/\s+/);
   if(hashtags.length <= 5) {
     for (let i = 0; i <= hashtags.length-1; i++) {
-      if (rex.test(hashtags[i])) {
-        return true;
-      } else {
+      if (!rex.test(hashtags[i]) || hashtags.slice(i+1).includes(hashtags[i])) {
         return false;
       }
     }
+    return true;
   }
-}
+  return false;
+};
 
 pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtags, errorMessage);
 
-const validateComments = (value) => {
-  checkСommentLength(value, 140);
-}
+const validateComments = (value) => checkСommentLength(value, 140);
 
-pristine.addValidator(imgUploadForm.querySelector('.text__description'), validateComments, 'длина комментария не может составлять больше 140 символов');
+pristine.addValidator(imgUploadForm.querySelector('.text__description'), validateComments, 'длина комментария не более 140 символов');
 
 imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
-
