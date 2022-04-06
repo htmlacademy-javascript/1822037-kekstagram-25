@@ -33,7 +33,7 @@ const NAMES = [
 ];
 
 const PHOTOS_COUNT = 25;
-const COMMENTS_COUNT = 5;
+const COMMENTS_COUNT = 10;
 
 const createComment = () => ({
   id: getRandomInt(1, 100),
