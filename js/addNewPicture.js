@@ -28,9 +28,7 @@ function onPopupEscKeydown(evt) {
 imgUploadInputElement.addEventListener('change', () => {
   if (imgUploadInputElement.value){
     openWindow();
-    imgUploadButtonCancelElement.addEventListener('click', () => {
-      closeWindow();
-    });
+    imgUploadButtonCancelElement.addEventListener('click', closeWindow);
   }
 });
 
@@ -43,23 +41,54 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'form__error'
 });
 
-const errorMessage = 'не более 5-ти хэш-тегов<br>максимальная длина хэш-тега 20 символов<br>хэш-теги не должны повторятся<br>хэш-тег должен содержать только буквы и цифры<br>хэш-тег должен начинатся с символа #';
-const rex = /^#[a-zа-яё0-9]{1,20}$/i;
-
-const validateHashtags = (value) => {
+const validateHashtagsQuantity = (value) => {
   const hashtags = value.trim().toLowerCase().split(/\s+/);
   if(hashtags.length <= 5) {
-    for (let i = 0; i <= hashtags.length-1; i++) {
-      if (!rex.test(hashtags[i]) || hashtags.slice(i+1).includes(hashtags[i])) {
-        return false;
-      }
-    }
     return true;
+  } else {
+    return false;
   }
-  return false;
 };
 
-pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtags, errorMessage);
+pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsQuantity, 'не более 5-ти хэш-тегов');
+
+const validateHashtagsLength = (value) => {
+  const hashtags = value.trim().toLowerCase().split(/\s+/);
+  for (const hashtag of hashtags) {
+    if(hashtag.length >= 20) {
+      return false;
+    }
+  }
+  return true;
+};
+
+pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsLength, 'максимальная длина хэш-тега 20 символов');
+
+const validateHashtagsDuplicate = (value) => {
+  const hashtags = value.trim().toLowerCase().split(/\s+/);
+  for (let i = 0; i <= hashtags.length-1; i++) {
+    if(hashtags.slice(i+1).includes(hashtags[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
+pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsDuplicate, 'хэш-теги не должны повторятся');
+
+const rex = /^#[a-zа-яё0-9]/i;
+
+const validateHashtagsSymbols = (value) => {
+  const hashtags = value.trim().toLowerCase().split(/\s+/);
+  for (const hashtag of hashtags) {
+    if (!rex.test(hashtag)){
+      return false;
+    }
+  }
+  return true;
+};
+
+pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsSymbols, 'хэш-тег должен начинатся с символа # и содержать только буквы и цифры');
 
 const validateComments = (value) => checkСommentLength(value, 140);
 
