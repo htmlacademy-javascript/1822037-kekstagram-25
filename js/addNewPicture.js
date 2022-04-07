@@ -1,4 +1,6 @@
 import {isEscapeKey, checkСommentLength} from './util.js';
+import {editScale} from './editNewPicture.js';
+import './editNewPicture.js';
 
 const body = document.body;
 const imgUploadOverlayElement = document.querySelector('.img-upload__overlay');
@@ -25,12 +27,14 @@ function onPopupEscKeydown(evt) {
   }
 }
 
+openWindow();
 imgUploadInputElement.addEventListener('change', () => {
   if (imgUploadInputElement.value){
-    openWindow();
     imgUploadButtonCancelElement.addEventListener('click', closeWindow);
   }
 });
+
+editScale();
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__text',

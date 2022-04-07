@@ -446,6 +446,10 @@ main {
           transform: translateY(1px);
 }
 
+.scale__control:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .scale__control--smaller {
   border-radius: 50% 0 0 50%;
 }
