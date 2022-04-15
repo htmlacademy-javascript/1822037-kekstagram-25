@@ -11,7 +11,6 @@ const commentsList = fullPicture.querySelector('.social__comments');
 const commentsButtonLoader = fullPicture.querySelector('.social__comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
-
 const closeWindow = () => {
   fullPicture.classList.add('hidden');
   commentsList.innerHTML = '';

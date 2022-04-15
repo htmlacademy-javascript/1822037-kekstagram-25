@@ -1,9 +1,12 @@
-import './data.js';
 import {renderPictures} from './renderPicture.js';
-import {createPhotos} from './data.js';
-import {checkСommentLength} from './util.js';
 import './addNewPicture.js';
+import {closeWindow} from './addNewPicture.js';
+import {setImgUploadFormSubmit} from './validateNewPicture.js';
+import {getData} from './api.js';
 
-checkСommentLength('строка', 12);
-const pictures = createPhotos();
-renderPictures(pictures);
+getData((pictures) => {
+  renderPictures(pictures);
+});
+
+setImgUploadFormSubmit(closeWindow);
+
