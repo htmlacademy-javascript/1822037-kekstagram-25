@@ -1,12 +1,10 @@
 import { checkСommentLength, isEscapeKey } from './util.js';
 import { sendData } from './api.js';
+import { resetSize } from './editNewPicture.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const previewPictureImg = document.querySelector('.img-upload__preview img');
-const imgUploadInputElement = document.querySelector('.img-upload__input');
-const checkboxEffectNoneElement = imgUploadForm.querySelector('#effect-none');
 const effectLevelContainer = imgUploadForm.querySelector('.img-upload__effect-level');
-const scaleControlInputElement = imgUploadForm.querySelector('.scale__control--value');
 const scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 const messageSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
 const messageSuccess = messageSuccessTemplate.cloneNode(true);
@@ -67,10 +65,13 @@ pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHa
 const rex = /^#[a-zа-яё0-9]/i;
 
 const validateHashtagsSymbols = (value) => {
-  const hashtags = value.trim().toLowerCase().split(/\s+/);
-  for (const hashtag of hashtags) {
-    if (!rex.test(hashtag)) {
-      return false;
+  const value1 = value.trim().toLowerCase();
+  if (value1) {
+    const hashtags = value1.split(/\s+/);
+    for (const hashtag of hashtags) {
+      if (!rex.test(hashtag)) {
+        return false;
+      }
     }
   }
   return true;
@@ -82,11 +83,18 @@ const validateComments = (value) => checkСommentLength(value, 140);
 
 pristine.addValidator(imgUploadForm.querySelector('.text__description'), validateComments, 'длина комментария не более 140 символов');
 
+const onMessageSuccessEscKeydown = (evt) => {
+  onPopupEscKeydown(evt, messageSuccess);
+};
+
+const onMessageErrorEscKeydown = (evt) => {
+  onPopupEscKeydown(evt, messageError);
+};
+
 const closeWindow = (window) => {
   window.classList.add('hidden');
-  document.removeEventListener('keydown', (evt) => {
-    onPopupEscKeydown(evt, messageSuccess)
-  });
+  document.removeEventListener('keydown', onMessageSuccessEscKeydown);
+  document.removeEventListener('keydown', onMessageErrorEscKeydown);
 };
 
 function onPopupEscKeydown(evt, window) {
@@ -95,6 +103,7 @@ function onPopupEscKeydown(evt, window) {
     closeWindow(window);
   }
 }
+
 
 const showMessageSuccess = () => {
   messageSuccess.classList.remove('hidden');
@@ -109,10 +118,8 @@ const showMessageSuccess = () => {
     }
   });
 
-  document.addEventListener('keydown', (evt) => {
-    onPopupEscKeydown(evt, messageSuccess)
-  });
-}
+  document.addEventListener('keydown', onMessageSuccessEscKeydown);
+};
 
 const showMessageError = () => {
   messageError.classList.remove('hidden');
@@ -127,23 +134,18 @@ const showMessageError = () => {
     }
   });
 
-  document.addEventListener('keydown', (evt) => {
-    onPopupEscKeydown(evt, messageError)
-  });
-}
+  document.addEventListener('keydown', onMessageErrorEscKeydown);
+};
 
 const resetForm = () => {
-  imgUploadForm.querySelector('.text__hashtags').value = '';
-  imgUploadForm.querySelector('.text__description').value = '';
-  imgUploadInputElement.value = '';
   previewPictureImg.style.filter = '';
   previewPictureImg.classList.value = 'effects__preview--none';
   previewPictureImg.style.transform = 'scale(1)';
   scaleControlSmallerElement.disabled = false;
-  scaleControlInputElement.value = '100%';
-  checkboxEffectNoneElement.checked = true;
   effectLevelContainer.classList.add('hidden');
-}
+  imgUploadForm.reset();
+  resetSize();
+};
 
 const blockSubmitButton = () => {
   imgUploadButtonSubmitElement.disabled = true;

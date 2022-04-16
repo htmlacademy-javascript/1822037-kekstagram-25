@@ -1,15 +1,15 @@
-import {showAlert} from './util.js';
+import { showAlert } from './util.js';
 
 const getData = (onSuccess) => {
   fetch('https://25.javascript.pages.academy/kekstagram/data')
-  .then((response) => {
-    if (response.ok) {
-      return (response);
-    } else {
-      showAlert('Не удалось загрузить фотографии')
-    }
-  })
-  .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return (response);
+      } else {
+        showAlert('Не удалось загрузить фотографии');
+      }
+    })
+    .then((response) => response.json())
     .then((pictures) => {
       onSuccess(pictures);
     })
@@ -26,16 +26,16 @@ const sendData = (onSuccess, onFail, body) => {
       body,
     },
   )
-  .then((response) => {
-    if (response.ok) {
-      onSuccess();
-    } else {
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail();
+      }
+    })
+    .catch(() => {
       onFail();
-    }
-  })
-  .catch(() => {
-    onFail();
-  });
+    });
 };
 
-export {getData, sendData};
+export { getData, sendData };
