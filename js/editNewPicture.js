@@ -95,13 +95,17 @@ const onfullPictureImgResize = (evt) => {
   } else if (evt.target.closest('.scale__control--bigger')) {
     if (size < 1) {
       size = size + step;
-      fullPictureImg.style  = `transform: scale(${size})`;
+      fullPictureImg.style = `transform: scale(${size})`;
       scaleControlSmallerElement.removeAttribute('disabled');
     } else if (size === 1) {
       scaleControlBiggerElement.setAttribute('disabled', 'disabled');
     }
   }
   scaleControlInputElement.value = `${(size * 100)}%`;
+};
+
+const resetSize = () => {
+  size = 1;
 };
 
 noUiSlider.create(effectLevelSliderElement, {
@@ -147,3 +151,5 @@ effectLevelSliderElement.noUiSlider.on('update', () => {
     effectLevelValueElement.value = 0;
   }
 });
+
+export { resetSize };

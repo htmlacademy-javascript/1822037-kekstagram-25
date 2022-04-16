@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import './editNewPicture.js';
 import './validateNewPicture.js';
+import {resetForm} from './validateNewPicture.js';
 
 const body = document.body;
 const imgUploadOverlayElement = document.querySelector('.img-upload__overlay');
@@ -11,6 +12,7 @@ const closeWindow = () => {
   imgUploadOverlayElement.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
+  resetForm();
 };
 
 const openWindow = () => {
@@ -32,3 +34,5 @@ imgUploadInputElement.addEventListener('change', () => {
     imgUploadButtonCancelElement.addEventListener('click', closeWindow);
   }
 });
+
+export {openWindow, closeWindow};
