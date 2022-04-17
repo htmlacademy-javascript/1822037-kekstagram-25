@@ -3,10 +3,13 @@ import './editNewPicture.js';
 import './validateNewPicture.js';
 import {resetForm} from './validateNewPicture.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const body = document.body;
 const imgUploadOverlayElement = document.querySelector('.img-upload__overlay');
 const imgUploadInputElement = document.querySelector('.img-upload__input');
 const imgUploadButtonCancelElement = document.querySelector('#upload-cancel');
+const previewPictureImg = document.querySelector('.img-upload__preview img');
 
 const closeWindow = () => {
   imgUploadOverlayElement.classList.add('hidden');
@@ -29,9 +32,15 @@ function onPopupEscKeydown(evt) {
 }
 
 imgUploadInputElement.addEventListener('change', () => {
-  openWindow();
-  if (imgUploadInputElement.value){
+  const file = imgUploadInputElement.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    previewPictureImg.src = URL.createObjectURL(file);
     imgUploadButtonCancelElement.addEventListener('click', closeWindow);
+    openWindow();
   }
 });
 
