@@ -1,7 +1,7 @@
-import {renderPictures} from './renderPicture.js';
-import './addNewPicture.js';
-import {closeWindow} from './addNewPicture.js';
-import {setImgUploadFormSubmit} from './validateNewPicture.js';
+import {renderPictures} from './render-picture.js';
+import './add-new-picture.js';
+import {closeWindow} from './add-new-picture.js';
+import {setImgUploadFormSubmit} from './validate-new-picture.js';
 import {getData} from './api.js';
 
 getData((pictures) => {

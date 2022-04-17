@@ -1,24 +1,24 @@
 import { checkСommentLength, isEscapeKey } from './util.js';
 import { sendData } from './api.js';
-import { resetSize } from './editNewPicture.js';
+import { resetSize } from './edit-new-picture.js';
 
-const imgUploadForm = document.querySelector('.img-upload__form');
-const previewPictureImg = document.querySelector('.img-upload__preview img');
-const effectLevelContainer = imgUploadForm.querySelector('.img-upload__effect-level');
+const imgUploadFormElement = document.querySelector('.img-upload__form');
+const previewPictureImgElement = document.querySelector('.img-upload__preview img');
+const effectLevelContainerElement = imgUploadFormElement.querySelector('.img-upload__effect-level');
 const scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
-const messageSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
-const messageSuccess = messageSuccessTemplate.cloneNode(true);
-const messageSuccessButtonElement = messageSuccess.querySelector('.success__button');
-const messageErrorTemplate = document.querySelector('#error').content.querySelector('.error');
-const messageError = messageErrorTemplate.cloneNode(true);
-const messageErrorButtonElement = messageError.querySelector('.error__button');
-const imgUploadButtonSubmitElement = imgUploadForm.querySelector('.img-upload__submit');
-document.body.appendChild(messageSuccess);
-document.body.appendChild(messageError);
-messageSuccess.classList.add('hidden');
-messageError.classList.add('hidden');
+const messageSuccessTemplateElement = document.querySelector('#success').content.querySelector('.success');
+const messageSuccessElement = messageSuccessTemplateElement.cloneNode(true);
+const messageSuccessButtonElement = messageSuccessElement.querySelector('.success__button');
+const messageErrorTemplateElement = document.querySelector('#error').content.querySelector('.error');
+const messageErrorElement = messageErrorTemplateElement.cloneNode(true);
+const messageErrorButtonElement = messageErrorElement.querySelector('.error__button');
+const imgUploadButtonSubmitElement = imgUploadFormElement.querySelector('.img-upload__submit');
+document.body.appendChild(messageSuccessElement);
+document.body.appendChild(messageErrorElement);
+messageSuccessElement.classList.add('hidden');
+messageErrorElement.classList.add('hidden');
 
-const pristine = new Pristine(imgUploadForm, {
+const pristine = new Pristine(imgUploadFormElement, {
   classTo: 'img-upload__text',
   errorClass: 'img-upload__text--invalid',
   successClass: 'img-upload__text--valid',
@@ -36,7 +36,7 @@ const validateHashtagsQuantity = (value) => {
   }
 };
 
-pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsQuantity, 'не более 5-ти хэш-тегов');
+pristine.addValidator(imgUploadFormElement.querySelector('.text__hashtags'), validateHashtagsQuantity, 'не более 5-ти хэш-тегов');
 
 const validateHashtagsLength = (value) => {
   const hashtags = value.trim().toLowerCase().split(/\s+/);
@@ -48,7 +48,7 @@ const validateHashtagsLength = (value) => {
   return true;
 };
 
-pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsLength, 'максимальная длина хэш-тега 20 символов');
+pristine.addValidator(imgUploadFormElement.querySelector('.text__hashtags'), validateHashtagsLength, 'максимальная длина хэш-тега 20 символов');
 
 const validateHashtagsDuplicate = (value) => {
   const hashtags = value.trim().toLowerCase().split(/\s+/);
@@ -60,7 +60,7 @@ const validateHashtagsDuplicate = (value) => {
   return true;
 };
 
-pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsDuplicate, 'хэш-теги не должны повторятся');
+pristine.addValidator(imgUploadFormElement.querySelector('.text__hashtags'), validateHashtagsDuplicate, 'хэш-теги не должны повторятся');
 
 const rex = /^#[a-zа-яё0-9]/i;
 
@@ -77,18 +77,18 @@ const validateHashtagsSymbols = (value) => {
   return true;
 };
 
-pristine.addValidator(imgUploadForm.querySelector('.text__hashtags'), validateHashtagsSymbols, 'хэш-тег должен начинатся с символа # и содержать только буквы и цифры');
+pristine.addValidator(imgUploadFormElement.querySelector('.text__hashtags'), validateHashtagsSymbols, 'хэш-тег должен начинатся с символа # и содержать только буквы и цифры');
 
 const validateComments = (value) => checkСommentLength(value, 140);
 
-pristine.addValidator(imgUploadForm.querySelector('.text__description'), validateComments, 'длина комментария не более 140 символов');
+pristine.addValidator(imgUploadFormElement.querySelector('.text__description'), validateComments, 'длина комментария не более 140 символов');
 
 const onMessageSuccessEscKeydown = (evt) => {
-  onPopupEscKeydown(evt, messageSuccess);
+  onPopupEscKeydown(evt, messageSuccessElement);
 };
 
 const onMessageErrorEscKeydown = (evt) => {
-  onPopupEscKeydown(evt, messageError);
+  onPopupEscKeydown(evt, messageErrorElement);
 };
 
 const closeWindow = (window) => {
@@ -104,17 +104,16 @@ function onPopupEscKeydown(evt, window) {
   }
 }
 
-
 const showMessageSuccess = () => {
-  messageSuccess.classList.remove('hidden');
+  messageSuccessElement.classList.remove('hidden');
 
   messageSuccessButtonElement.addEventListener('click', () => {
-    closeWindow(messageSuccess);
+    closeWindow(messageSuccessElement);
   });
 
-  messageSuccess.addEventListener('click', (evt) => {
+  messageSuccessElement.addEventListener('click', (evt) => {
     if (!evt.target.closest('.success__inner')) {
-      closeWindow(messageSuccess);
+      closeWindow(messageSuccessElement);
     }
   });
 
@@ -122,15 +121,15 @@ const showMessageSuccess = () => {
 };
 
 const showMessageError = () => {
-  messageError.classList.remove('hidden');
+  messageErrorElement.classList.remove('hidden');
 
   messageErrorButtonElement.addEventListener('click', () => {
-    closeWindow(messageError);
+    closeWindow(messageErrorElement);
   });
 
-  messageError.addEventListener('click', (evt) => {
+  messageErrorElement.addEventListener('click', (evt) => {
     if (!evt.target.closest('.error__inner')) {
-      closeWindow(messageError);
+      closeWindow(messageErrorElement);
     }
   });
 
@@ -138,12 +137,12 @@ const showMessageError = () => {
 };
 
 const resetForm = () => {
-  previewPictureImg.style.filter = '';
-  previewPictureImg.classList.value = 'effects__preview--none';
-  previewPictureImg.style.transform = 'scale(1)';
+  previewPictureImgElement.style.filter = '';
+  previewPictureImgElement.classList.value = 'effects__preview--none';
+  previewPictureImgElement.style.transform = 'scale(1)';
   scaleControlSmallerElement.disabled = false;
-  effectLevelContainer.classList.add('hidden');
-  imgUploadForm.reset();
+  effectLevelContainerElement.classList.add('hidden');
+  imgUploadFormElement.reset();
   resetSize();
 };
 
@@ -158,7 +157,7 @@ const unblockSubmitButton = () => {
 };
 
 const setImgUploadFormSubmit = (onSuccess) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
+  imgUploadFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
