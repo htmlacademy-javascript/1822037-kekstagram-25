@@ -84,7 +84,7 @@ const effectLevelSliderElement = document.querySelector('.effect-level__slider')
 const effectLevelValueElement = document.querySelector('.effect-level__value');
 
 scaleControlBiggerElement.disabled = true;
-const onfullPictureImgResize = (evt) => {
+const onFullPictureImgResize = (evt) => {
   if (evt.target.closest('.scale__control--smaller')) {
     size = size - step;
     previewPictureImgElement.style.transform = `scale(${size})`;
@@ -118,7 +118,7 @@ noUiSlider.create(effectLevelSliderElement, {
   connect: 'lower',
 });
 
-imgUploadScaleContainerElement.addEventListener('click', onfullPictureImgResize);
+imgUploadScaleContainerElement.addEventListener('click', onFullPictureImgResize);
 
 effectsListElement.addEventListener('change', (evt) => {
   if (evt.target.closest('.effects__radio')) {

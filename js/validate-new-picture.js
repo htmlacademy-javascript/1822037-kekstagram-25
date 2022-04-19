@@ -1,7 +1,8 @@
-import { checkСommentLength, isEscapeKey } from './util.js';
+import { checkCommentLength, isEscapeKey } from './util.js';
 import { sendData } from './api.js';
 import { resetSize } from './edit-new-picture.js';
 
+const maxCommentLength = 140;
 const imgUploadFormElement = document.querySelector('.img-upload__form');
 const previewPictureImgElement = document.querySelector('.img-upload__preview img');
 const effectLevelContainerElement = imgUploadFormElement.querySelector('.img-upload__effect-level');
@@ -31,8 +32,6 @@ const validateHashtagsQuantity = (value) => {
   const hashtags = value.trim().toLowerCase().split(/\s+/);
   if (hashtags.length <= 5) {
     return true;
-  } else {
-    return false;
   }
 };
 
@@ -79,7 +78,7 @@ const validateHashtagsSymbols = (value) => {
 
 pristine.addValidator(imgUploadFormElement.querySelector('.text__hashtags'), validateHashtagsSymbols, 'хэш-тег должен начинатся с символа # и содержать только буквы и цифры');
 
-const validateComments = (value) => checkСommentLength(value, 140);
+const validateComments = (value) => checkCommentLength(value, maxCommentLength);
 
 pristine.addValidator(imgUploadFormElement.querySelector('.text__description'), validateComments, 'длина комментария не более 140 символов');
 
