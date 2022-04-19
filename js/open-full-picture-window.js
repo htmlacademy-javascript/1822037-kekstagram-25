@@ -11,14 +11,14 @@ const commentsListElement = fullPictureContainerElement.querySelector('.social__
 const commentsButtonLoaderElement = fullPictureContainerElement.querySelector('.social__comments-loader');
 const commentTemplateElement = document.querySelector('#comment').content.querySelector('.social__comment');
 
-const closeWindow = () => {
+const onWindowClose = () => {
   fullPictureContainerElement.classList.add('hidden');
   commentsListElement.innerHTML = '';
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-const openWindow = () => {
+const onWindowOpen = () => {
   fullPictureContainerElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onPopupEscKeydown);
@@ -27,7 +27,7 @@ const openWindow = () => {
 function onPopupEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeWindow();
+    onWindowClose();
   }
 }
 
@@ -52,11 +52,11 @@ const openFullPictureWindow = (picture) => {
   fullPictureDescriptionElement.textContent = picture.description;
   fullPictureCommentsCountElement.textContent = picture.comments.length;
   renderComments(picture.comments);
-  openWindow();
+  onWindowOpen();
 };
 
 pictureButtonCancelElement.addEventListener('click', () => {
-  closeWindow();
+  onWindowClose();
 });
 
 export {openFullPictureWindow};
